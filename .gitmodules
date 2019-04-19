@@ -1,0 +1,19 @@
+[submodule "src/aruco_ros"]
+	path = src/aruco_ros
+	url = https://github.com/pal-robotics/aruco_ros.git
+[submodule "src/apriltags2_ros"]
+	path = src/apriltags2_ros
+	url = https://github.com/AprilRobotics/apriltag_ros.git
+[submodule "src/mavros"]
+	path = src/mavros
+	url = https://github.com/mavlink/mavros.git
+[submodule "src/mavlink_sitl_gazebo"]
+	path = src/mavlink_sitl_gazebo
+	url = https://github.com/PX4/sitl_gazebo.git
+[submodule "src/px4_firmware"]
+	path = src/px4_firmware
+	url = git@bitbucket.org:volansi/voly-px4firmware.git
+	branch = voly-master
+[submodule "src/precision_landing"]
+	path = src/precision_landing
+	url = git@bitbucket.org:volansi/precision_landing.git
