@@ -9,7 +9,7 @@
 	url = https://github.com/mavlink/mavros.git
 [submodule "src/mavlink_sitl_gazebo"]
 	path = src/mavlink_sitl_gazebo
-	url = https://github.com/PX4/sitl_gazebo.git
+	url = git@bitbucket.org:volansi/voly-sitl_gazebo.git
 [submodule "src/px4_firmware"]
 	path = src/px4_firmware
 	url = git@bitbucket.org:volansi/voly-px4firmware.git
