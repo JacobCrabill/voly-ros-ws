@@ -20,3 +20,6 @@
 [submodule "src/apriltag_lib"]
 	path = src/apriltag_lib
 	url = https://github.com/AprilRobotics/apriltag.git
+[submodule "src/robot_localization"]
+	path = src/robot_localization
+	url = https://github.com/cra-ros-pkg/robot_localization.git
