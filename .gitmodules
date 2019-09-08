@@ -26,3 +26,6 @@
 [submodule "src/mavlink-router"]
 	path = src/mavlink-router
 	url = https://github.com/intel/mavlink-router.git
+[submodule "src/orb_slam_2_ros"]
+	path = src/orb_slam_2_ros
+	url = https://github.com/appliedAI-Initiative/orb_slam_2_ros.git
