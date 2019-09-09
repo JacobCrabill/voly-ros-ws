@@ -55,3 +55,22 @@ To start PX4 SITL and spawn a vehicle with a moving fiducial marker for tracking
 #!bash
 $ roslaunch volys_precision_landing precision_landing.launch
 ```
+
+Currently, by default, the horizontal velocity arguments for the moving platform (`helipad_x_vel` and `helipad_y_vel`) are set to 0, meaning that the platform is static.
+
+#### Launch the robot_localization to do sensor fusion
+
+After running the simulation pipeline, launch the sensor fusion using:
+
+```
+#!bash
+$ roslaunch volys_precision_landing sensor_fusion.launch
+```
+
+#### Launch a simulation world with a map of a place loaded
+
+The `google_static_map.world` world file located in the *precision_landing* package launches the Gazebo *StaticMapPlugin*, which loads a ground plane model with satellite images using the Google's Static Map API. For more info on the plugin, check http://gazebosim.org/tutorials?tut=static_map_plugin&cat=build_world.
+
+To launch the world, on the `precision_landing.launch` file, replace the default world arg with `google_static_map.world`.
+
+_Note: To use this plugin, Gazebo 9.10 or greater is required. To install it, please follow the instructions in http://gazebosim.org/tutorials?tut=install_ubuntu&cat=install.
