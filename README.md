@@ -73,4 +73,24 @@ The `google_static_map.world` world file located in the *precision_landing* pack
 
 To launch the world, on the `precision_landing.launch` file, replace the default world arg with `google_static_map.world`.
 
-_Note: To use this plugin, Gazebo 9.10 or greater is required. To install it, please follow the instructions in http://gazebosim.org/tutorials?tut=install_ubuntu&cat=install.
+_Note: To use this plugin, Gazebo 9.10 or greater is required. To install it, please follow the instructions in http://gazebosim.org/tutorials?tut=install_ubuntu&cat=install. _
+
+### Visual odometry pipeline
+
+The chosen visual odometry method is using a monocular camera and [ORB-SLAM2](https://arxiv.org/abs/1610.06475). The node is launched with the following:
+
+```
+#!bash
+$ roslaunch volys_precision_landing visual_odometry.launch
+```
+
+Some remarks:
+
+1.  The visual odometry system requires some visual map points to be retrieved for initialization (one will be able to see `Map point vector is empty!` message after launching the node). That's because the monocular SLAM requires some initialization. Part of the initialization method is to move the camera around, until the system creates a map (a message like `New Map created with ... points` will appear);
+1.  Only after the the initial map is created that the ORB dictionary is able to be applied on the SLAM system;
+1.  In simulation, a warehouse world was loaded so it is able to retrieve enough features of the environment to initialize SLAM faster;
+1.  Point 4 should be replace with a map texture and the camera then will be pointing downwards.
+
+To use the visual odometry data inside the Flight Controller, the `EKF2_AID_MASK` PX4 parameter should be set to, at least, 24 (25 will mean that the GPS will also be used). The data is propagated from the ORB-SLAM2 topic to the `vision_pose_estimate` plugin in MAVROS and from it to the FCU thtough the `VISION_POSITION_ESTIMATE` Mavlink message.
+
+_Note: Should be considered a stereo system for stereo visual odometry._
