@@ -26,3 +26,6 @@
 [submodule "src/orb_slam_2_ros"]
 	path = src/orb_slam_2_ros
 	url = https://github.com/appliedAI-Initiative/orb_slam_2_ros.git
+[submodule "src/mavlink_sitl_gazebo"]
+	path = src/mavlink_sitl_gazebo
+	url = git@bitbucket.org:volansi/voly-sitl_gazebo.git
