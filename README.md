@@ -73,7 +73,9 @@ The `google_static_map.world` world file located in the *precision_landing* pack
 
 To launch the world, on the `precision_landing.launch` file, replace the default world arg with `google_static_map.world`.
 
-_Note: To use this plugin, Gazebo 9.10 or greater is required. To install it, please follow the instructions in http://gazebosim.org/tutorials?tut=install_ubuntu&cat=install. _
+_Note: To use this plugin, Gazebo 9.10 or greater is required. To install it, please follow the instructions in http://gazebosim.org/tutorials?tut=install_ubuntu&cat=install documentation._
+
+_Note: if one gets an error like `StaticMapPlugin: boost::filesystem::rename: Invalid cross-device link: "/tmp/<model_name>", "/home/.../.gazebo/models/<model_name>"` after launching the world, means that your `/temp` dir is in a different partition than `~/.gazebo`. A fix was done in https://bitbucket.org/osrf/gazebo/pull-requests/3123/fix-moving-model-files-in-staticmapplugin/diff. While it doesn't get merged and released, one can manually copy the contents of the created /temp/<model_name> to ~/.gazebo/models/<model_name> and set <use_cache>true</use_cache>. Note also that there's already a `buchanan_field_airport.world` than can be used as an example._
 
 ### Visual odometry pipeline
 
