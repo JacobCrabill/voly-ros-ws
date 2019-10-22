@@ -29,3 +29,6 @@
 [submodule "src/mavlink_sitl_gazebo"]
 	path = src/mavlink_sitl_gazebo
 	url = git@bitbucket.org:volansi/voly-sitl_gazebo.git
+[submodule "src/spinnaker_sdk_camera_driver"]
+	path = src/spinnaker_sdk_camera_driver
+	url = https://github.com/neufieldrobotics/spinnaker_camera_driver.git
