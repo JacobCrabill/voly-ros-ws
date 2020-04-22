@@ -1,0 +1,17 @@
+version 2.1
+jobs:
+    build-ros-ws:
+        docker:
+          - image: flyvoly/lomp:latest
+
+        resource_class: medium
+
+        steps:
+            - checkout
+            - run:
+                name: sourcing
+                command: source devel/setup.bash
+            - run:
+                name: build ros packages
+                command: catkin build px4 mavlink_sitl_gazebo volys_precision_landing
+
