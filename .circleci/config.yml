@@ -19,7 +19,7 @@ jobs:
           name: Build ros packages
           command: |
             source /opt/ros/melodic/setup.bash
-            catkin build px4 mavlink_sitl_gazebo volys_precision_landing
+            catkin build -j4 px4 mavlink_sitl_gazebo volys_precision_landing
 
 workflows:
   version: 2
