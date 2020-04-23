@@ -10,7 +10,11 @@ jobs:
       - checkout
       - run:
           name: Setup submodules
-          command: git submodule sync --recursive && git submodule update --init --recursive
+          command: |
+            chmod 700 .ssh/key
+            eval `ssh-agent`
+            ssh-add .ssh/key
+            git submodule sync --recursive && git submodule update --init --recursive
       - run:
           name: Build ros packages
           command: catkin build px4 mavlink_sitl_gazebo volys_precision_landing
