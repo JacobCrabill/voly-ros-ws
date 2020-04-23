@@ -10,9 +10,8 @@ jobs:
       - checkout
       - run:
           name: setup submodules
-          commmand: |
-            git submodule sync --recursive
-            git submodule update --init --recursive
+          commmand: git submodule sync --recursive && git submodule update --init --recursive
+
       - run:
           name: build ros packages
           command: catkin build px4 mavlink_sitl_gazebo volys_precision_landing
