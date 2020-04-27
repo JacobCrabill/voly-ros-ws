@@ -18,12 +18,13 @@ jobs:
       - run:
           name: Build ros packages
           command: |
+            pwd
             source /opt/ros/melodic/setup.bash
             catkin build -j4 px4 mavlink_sitl_gazebo volys_precision_landing
       - save_cache:
           key: precision-landing-{{ .Branch }}-{{ .Revision }}
           paths: 
-            - ~/precision-landing.bz2
+            - ./
 
   run-precision-landing-test:
     docker:
