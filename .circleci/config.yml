@@ -20,10 +20,46 @@ jobs:
           command: |
             source /opt/ros/melodic/setup.bash
             catkin build -j4 px4 mavlink_sitl_gazebo volys_precision_landing
+      - save_cache:
+          key: precision-landing-{{ .Branch }}-{{ .BuildNum }}
+          paths: 
+            - ~/precision-landing.bz2
+
+  run-precision-landing-test:
+    docker:
+      - image: flyvoly/lomp:latest
+
+    resource_class: large
+    
+    steps:
+      - restore_cache:
+          keys: 
+            - precision-landing-{{ .Branch }}-{{ .BuildNum }}
+    
+      - run:
+          name: Unpack SITL
+          command: |
+            tar -xjpvf ~/precision-landing.bz2
+            mv px4-precision-landing* precision-landing/
+      
+      - run:
+          name: Run VTOL Mission
+          command: |
+            export SITL_RUN_SH="precision-landing/src/px4_firmware/px4/test/rostest_px4_run.sh"
+            export PX4_HOME_LAT=37.994068
+            export PX4_HOME_LON=-122.0614603
+            export PX4_HOME_ALT=0.0
+            echo ${SITL_RUN_SH}
+            bash ${SITL_RUN_SH}
 
 workflows:
   version: 2
 
-  build-workflow:
+  precision-landing-test:
     jobs: 
       - build-ros-ws
+      - run-precision-landing-test:
+          requires:
+            - build-ros-ws
+
+  
