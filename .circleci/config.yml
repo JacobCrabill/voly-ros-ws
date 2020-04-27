@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Run VTOL Mission
           command: |
-            export SITL_RUN_SH="./src/px4_firmware/px4/test/rostest_px4_run.sh"
+            export SITL_RUN_SH="/root/project/src/px4_firmware/px4/test/rostest_precision_landing.sh"
             export PX4_HOME_LAT=37.994068
             export PX4_HOME_LON=-122.0614603
             export PX4_HOME_ALT=0.0
