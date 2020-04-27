@@ -21,7 +21,7 @@ jobs:
             source /opt/ros/melodic/setup.bash
             catkin build -j4 px4 mavlink_sitl_gazebo volys_precision_landing
       - save_cache:
-          key: precision-landing-{{ .Branch }}-{{ .BuildNum }}
+          key: precision-landing-{{ .Branch }}-{{ .Revision }}
           paths: 
             - ~/precision-landing.bz2
 
@@ -34,7 +34,7 @@ jobs:
     steps:
       - restore_cache:
           keys: 
-            - precision-landing-{{ .Branch }}-{{ .BuildNum }}
+            - precision-landing-{{ .Branch }}-{{ .Revision }}
     
       - run:
           name: Unpack SITL
