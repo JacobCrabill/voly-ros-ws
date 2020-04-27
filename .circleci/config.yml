@@ -18,7 +18,6 @@ jobs:
       - run:
           name: Build ros packages
           command: |
-            pwd
             source /opt/ros/melodic/setup.bash
             catkin build -j4 px4 mavlink_sitl_gazebo volys_precision_landing
       - save_cache:
@@ -40,9 +39,7 @@ jobs:
       - run:
           name: Run VTOL Mission
           command: |
-            pwd
-            ls
-            export SITL_RUN_SH="precision-landing/src/px4_firmware/px4/test/rostest_px4_run.sh"
+            export SITL_RUN_SH="./src/px4_firmware/px4/test/rostest_px4_run.sh"
             export PX4_HOME_LAT=37.994068
             export PX4_HOME_LON=-122.0614603
             export PX4_HOME_ALT=0.0
