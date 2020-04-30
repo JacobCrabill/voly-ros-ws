@@ -19,7 +19,7 @@ jobs:
           name: Build ros packages
           command: |
             source /opt/ros/melodic/setup.bash
-            catkin build -j4 px4 mavlink_sitl_gazebo volys_precision_landing
+            catkin build -j4 px4 mavlink_sitl_gazebo mavros mavros_extras volys_precision_landing robot_localization
       - save_cache:
           key: precision-landing-{{ .Branch }}-{{ .Revision }}
           paths: 
@@ -41,7 +41,25 @@ jobs:
           command: |
             export SITL_RUN_SH="/root/project/src/px4_firmware/test/rostest_precision_landing.sh"
             echo ${SITL_RUN_SH}
-            bash ${SITL_RUN_SH}
+            bash ${SITL_RUN_SH} precision_landing_test.test
+
+  run-precision-landing-payload-drop-test:
+    docker:
+      - image: flyvoly/lomp:latest
+
+    resource_class: large
+    
+    steps:
+      - restore_cache:
+          keys: 
+            - precision-landing-{{ .Branch }}-{{ .Revision }}
+      
+      - run:
+          name: Run VTOL Mission
+          command: |
+            export SITL_RUN_SH="/root/project/src/px4_firmware/test/rostest_precision_landing.sh"
+            echo ${SITL_RUN_SH}
+            bash ${SITL_RUN_SH} precision_landing_payload_drop.test
 
 workflows:
   version: 2
@@ -50,6 +68,9 @@ workflows:
     jobs: 
       - build-ros-ws
       - run-precision-landing-test:
+          requires:
+            - build-ros-ws
+      - run-precision-landing-payload-drop-test:
           requires:
             - build-ros-ws
 
