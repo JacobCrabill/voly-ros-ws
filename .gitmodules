@@ -19,7 +19,7 @@
 	url = https://github.com/AprilRobotics/apriltag.git
 [submodule "src/robot_localization"]
 	path = src/robot_localization
-	url = https://github.com/cra-ros-pkg/robot_localization.git
+	url = git@bitbucket.org:volansi/robot_localization.git
 [submodule "src/mavlink-router"]
 	path = src/mavlink-router
 	url = https://github.com/intel/mavlink-router.git
