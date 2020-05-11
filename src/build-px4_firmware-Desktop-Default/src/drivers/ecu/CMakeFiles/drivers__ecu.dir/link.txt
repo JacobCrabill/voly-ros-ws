@@ -1,2 +1,0 @@
-/usr/bin/ar qc libdrivers__ecu.a  CMakeFiles/drivers__ecu.dir/ecu.cpp.o CMakeFiles/drivers__ecu.dir/ecu_proto.cpp.o CMakeFiles/drivers__ecu.dir/currawong.cpp.o
-/usr/bin/ranlib libdrivers__ecu.a

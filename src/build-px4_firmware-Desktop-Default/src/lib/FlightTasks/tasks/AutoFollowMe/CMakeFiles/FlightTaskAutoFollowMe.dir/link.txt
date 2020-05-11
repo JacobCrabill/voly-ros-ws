@@ -1,2 +1,0 @@
-/usr/bin/ar qc libFlightTaskAutoFollowMe.a  CMakeFiles/FlightTaskAutoFollowMe.dir/FlightTaskAutoFollowMe.cpp.o
-/usr/bin/ranlib libFlightTaskAutoFollowMe.a

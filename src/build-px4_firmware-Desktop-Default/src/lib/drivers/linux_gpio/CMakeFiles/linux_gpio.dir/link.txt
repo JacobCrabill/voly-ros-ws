@@ -1,2 +1,0 @@
-/usr/bin/ar qc liblinux_gpio.a  CMakeFiles/linux_gpio.dir/linux_gpio.cpp.o
-/usr/bin/ranlib liblinux_gpio.a

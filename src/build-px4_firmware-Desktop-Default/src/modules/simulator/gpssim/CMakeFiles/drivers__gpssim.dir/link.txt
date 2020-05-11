@@ -1,2 +1,0 @@
-/usr/bin/ar qc libdrivers__gpssim.a  CMakeFiles/drivers__gpssim.dir/gpssim.cpp.o
-/usr/bin/ranlib libdrivers__gpssim.a
