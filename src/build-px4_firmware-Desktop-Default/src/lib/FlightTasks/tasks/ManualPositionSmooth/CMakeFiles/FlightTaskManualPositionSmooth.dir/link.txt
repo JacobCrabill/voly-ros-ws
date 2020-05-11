@@ -1,0 +1,2 @@
+/usr/bin/ar qc libFlightTaskManualPositionSmooth.a  CMakeFiles/FlightTaskManualPositionSmooth.dir/FlightTaskManualPositionSmooth.cpp.o
+/usr/bin/ranlib libFlightTaskManualPositionSmooth.a

@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/amir/Documents/Volas-iRepo/voly-ros_ws/src/build-px4_firmware-Desktop-Default/platforms/posix/CMakeFiles/sitl_gazebo"
+		},
+		{
+			"file" : "/home/amir/Documents/Volas-iRepo/voly-ros_ws/src/build-px4_firmware-Desktop-Default/platforms/posix/CMakeFiles/sitl_gazebo.rule"
+		},
+		{
+			"file" : "/home/amir/Documents/Volas-iRepo/voly-ros_ws/src/build-px4_firmware-Desktop-Default/platforms/posix/CMakeFiles/sitl_gazebo-complete.rule"
+		},
+		{
+			"file" : "/home/amir/Documents/Volas-iRepo/voly-ros_ws/src/build-px4_firmware-Desktop-Default/external/Stamp/sitl_gazebo/sitl_gazebo-install.rule"
+		},
+		{
+			"file" : "/home/amir/Documents/Volas-iRepo/voly-ros_ws/src/build-px4_firmware-Desktop-Default/external/Stamp/sitl_gazebo/sitl_gazebo-mkdir.rule"
+		},
+		{
+			"file" : "/home/amir/Documents/Volas-iRepo/voly-ros_ws/src/build-px4_firmware-Desktop-Default/external/Stamp/sitl_gazebo/sitl_gazebo-download.rule"
+		},
+		{
+			"file" : "/home/amir/Documents/Volas-iRepo/voly-ros_ws/src/build-px4_firmware-Desktop-Default/external/Stamp/sitl_gazebo/sitl_gazebo-update.rule"
+		},
+		{
+			"file" : "/home/amir/Documents/Volas-iRepo/voly-ros_ws/src/build-px4_firmware-Desktop-Default/external/Stamp/sitl_gazebo/sitl_gazebo-patch.rule"
+		},
+		{
+			"file" : "/home/amir/Documents/Volas-iRepo/voly-ros_ws/src/build-px4_firmware-Desktop-Default/external/Stamp/sitl_gazebo/sitl_gazebo-configure.rule"
+		},
+		{
+			"file" : "/home/amir/Documents/Volas-iRepo/voly-ros_ws/src/build-px4_firmware-Desktop-Default/external/Stamp/sitl_gazebo/sitl_gazebo-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"sitl_gazebo"
+		],
+		"name" : "sitl_gazebo"
+	}
+}

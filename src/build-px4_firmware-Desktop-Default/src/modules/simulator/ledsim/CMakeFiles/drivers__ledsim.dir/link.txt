@@ -1,0 +1,2 @@
+/usr/bin/ar qc libdrivers__ledsim.a  CMakeFiles/drivers__ledsim.dir/led.cpp.o
+/usr/bin/ranlib libdrivers__ledsim.a

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libFlightTaskManualAltitudeSmooth.a  CMakeFiles/FlightTaskManualAltitudeSmooth.dir/FlightTaskManualAltitudeSmooth.cpp.o
+/usr/bin/ranlib libFlightTaskManualAltitudeSmooth.a

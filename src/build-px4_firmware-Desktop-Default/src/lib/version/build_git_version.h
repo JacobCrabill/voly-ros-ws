@@ -1,0 +1,19 @@
+
+/* Auto Magically Generated file */
+/* Do not edit! */
+#pragma once
+
+#define PX4_GIT_VERSION_STR  "74030b3e453424d6d35ec4d39b52a02ecac8726b"
+#define PX4_GIT_VERSION_BINARY 0x74030b3e453424d6
+#define PX4_GIT_TAG_STR  "v1.10.0-beta2-457-g74030b3e45-dirty"
+#define PX4_GIT_BRANCH_NAME  "feature-precland"
+
+#define ECL_LIB_GIT_VERSION_STR  "d9cc4700bdaa220835075da9de2c52ad2883621e"
+#define ECL_LIB_GIT_VERSION_BINARY 0xd9cc4700bdaa2208
+
+#define MAVLINK_LIB_GIT_VERSION_STR  "44cf5c4695c4afcb9b8f25f4a5f0104bd82052a8"
+#define MAVLINK_LIB_GIT_VERSION_BINARY 0x44cf5c4695c4afcb
+
+#define NUTTX_GIT_VERSION_STR  "427238133be2b0ecd068a11e886ee8fdbc31f6dc"
+#define NUTTX_GIT_VERSION_BINARY 0x427238133be2b0ec
+#define NUTTX_GIT_TAG_STR  "v7.29.0"
