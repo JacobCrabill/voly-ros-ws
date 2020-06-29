@@ -31,7 +31,7 @@
 	url = git@bitbucket.org:volansi/voly-sitl_gazebo.git
 [submodule "src/spinnaker_sdk_camera_driver"]
 	path = src/spinnaker_sdk_camera_driver
-	url = https://github.com/neufieldrobotics/spinnaker_camera_driver.git
+	url = git@bitbucket.org:volansi/spinnaker_sdk_camera_driver.git
 [submodule "src/image_pipeline"]
 	path = src/image_pipeline
 	url = https://github.com/ros-perception/image_pipeline.git
