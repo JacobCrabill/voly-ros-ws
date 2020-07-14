@@ -41,6 +41,16 @@ $ catkin build
 $ catkin clean --all -y
 ```
 
+## Build Intel NUC Docker Container Image
+
+```
+$ ~ cd src
+$ git submodule init && git submodule update
+$ cd px4_firmware/Tools
+$ git submodule init && git submodule update
+$ cd ~
+$ docker build -f ./Dockerfile.balena-intel-nuc -t balena-voly-ros_ws:latest .
+
 ## Run
 
 _Note: Make sure to source the workspace after building it using `source <path_to_voly_ros_ws>/devel/setup.bash`._
