@@ -61,12 +61,25 @@ jobs:
             echo ${SITL_RUN_SH}
             bash ${SITL_RUN_SH} precision_landing_payload_drop.test
 
+  build-balena-docker-ros-ws:
+    machine: true
+    steps:
+      - checkout
+      - run |
+          cd src
+          git submodule init && git submodule update
+          cd px4_firmware/Tools
+          git submodule init && git submodule update
+          cd ../../../
+          docker build -f ./Dockerfile.balena-intel-nuc -t balena-voly-ros_ws:latest .
+
 workflows:
   version: 2
 
   precision-landing-test:
     jobs: 
       - build-ros-ws
+      - build-balena-docker-ros-ws
       - run-precision-landing-test:
           requires:
             - build-ros-ws
