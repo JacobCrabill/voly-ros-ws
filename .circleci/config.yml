@@ -65,7 +65,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run |
+      - run: |
           cd src
           git submodule init && git submodule update
           cd px4_firmware/Tools
