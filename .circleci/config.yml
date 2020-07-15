@@ -64,6 +64,9 @@ jobs:
   build-balena-docker-ros-ws:
     machine: true
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "66:d2:c5:6a:6e:d7:48:41:e6:31:5c:55:17:70:58:b4"
       - checkout
       - run: |
           cd src
