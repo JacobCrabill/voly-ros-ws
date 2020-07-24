@@ -10,6 +10,9 @@
 #include <gazebo/sensors/SensorTypes.hh>
 #include <gazebo/plugins/RayPlugin.hh>
 
+/**
+ * Note: Sensor coordinate is defined as such: Forward is X, Left is Y, Up is Z.
+*/
 namespace gazebo {
   class LivoxLidar : public RayPlugin {
     public:
@@ -28,6 +31,7 @@ namespace gazebo {
       ros::Publisher _pub;
       /** Publish lidar topic name. */
       std::string _topic_name;
+      std::string _frame_name;
       /** Pointer to parent. */
       sensors::RaySensorPtr _parent_ray_sensor;
 
