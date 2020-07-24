@@ -32,6 +32,7 @@ namespace gazebo {
       /** Publish lidar topic name. */
       std::string _topic_name;
       std::string _frame_name;
+      double _circular_fov;
       /** Pointer to parent. */
       sensors::RaySensorPtr _parent_ray_sensor;
 

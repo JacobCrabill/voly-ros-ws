@@ -60,6 +60,14 @@ namespace gazebo {
       _frame_name = _sdf->GetElement("frameName")->Get<std::string>();
     }
 
+    if (!_sdf->HasElement("circularFOV")) {
+      ROS_INFO("Need to provide 'circularFOV' for livox sensor, default to 38.4 degrees.");
+      _circular_fov = 38.4 * M_PI / 180.0;
+    }
+    else {
+      _circular_fov = _sdf->GetElement("circularFOV")->Get<double>() * M_PI / 180.0;
+    }
+
     _parent_ray_sensor->SetActive(true);
     _sub = _gazebo_node->Subscribe(_parent_ray_sensor->Topic(), &LivoxLidar::OnScan, this);
     _pub = _nh->advertise<sensor_msgs::PointCloud2>(_topic_name, 5);
@@ -135,12 +143,20 @@ namespace gazebo {
         float range_x = range_xy * cos(azimuth);
         float range_y = range_xy * sin(azimuth);
 
-        data_ptr[NUM_FIELDS * num_points] = range_x;
-        data_ptr[NUM_FIELDS * num_points + 1] = range_y;
-        data_ptr[NUM_FIELDS * num_points + 2] = range_z;
-        data_ptr[NUM_FIELDS * num_points + 3] = intensity;
-  
-        num_points++;
+        ignition::math::Vector3<float> laser_vec(range_x, range_y, range_z);
+        ignition::math::Vector3<float> laser_vec_unit = laser_vec.Normalize();
+        ignition::math::Vector3<float> forward(1.0, 0, 0);
+        float dot_product = laser_vec_unit.Dot(forward);
+
+        // The laser lies within the circular FOV of the lidar.
+        if (dot_product > cos(_circular_fov / 2.0)) {
+          data_ptr[NUM_FIELDS * num_points] = range_x;
+          data_ptr[NUM_FIELDS * num_points + 1] = range_y;
+          data_ptr[NUM_FIELDS * num_points + 2] = range_z;
+          data_ptr[NUM_FIELDS * num_points + 3] = intensity;
+    
+          num_points++;
+        }
       }
     }
     pc_msg.width = num_points;
