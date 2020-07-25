@@ -157,7 +157,7 @@ namespace gazebo {
         }
       }
       // Increment the phase.
-      _total_phase_shift = fmod(_total_phase_shift + NUM_SCAN_PER_MSG * PHASE_SHIFT, 2 * M_PI);
+      _total_phase_shift = fmod(_total_phase_shift + PHASE_SHIFT, 2 * M_PI);
     }
 
     for (auto it = col_row_set.begin(); it != col_row_set.end(); it++) {
