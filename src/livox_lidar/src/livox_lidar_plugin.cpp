@@ -9,12 +9,16 @@
 
 #include <sensor_msgs/PointCloud2.h>
 #include <math.h>
+#include <unordered_set>
+#include <utility>
+#include <boost/functional/hash.hpp>
 
 namespace gazebo {
   GZ_REGISTER_SENSOR_PLUGIN(LivoxLidar)
 
-  LivoxLidar::LivoxLidar() {
-    int argc;
+  LivoxLidar::LivoxLidar() : _total_phase_shift(0.0), PHASE_SHIFT(2.0 * M_PI * (1 + pow(N, 2)) / pow(N, 3))
+  {
+    int argc = 0;
     ros::init(argc, NULL, "livox_lidar_plugin_node");
     _nh = new ros::NodeHandle();
   }
@@ -124,41 +128,67 @@ namespace gazebo {
 
     float* data_ptr = (float*) pc_msg.data.data();
     uint32_t num_points = 0;
-    for (int row = 0; row < vertical_count; row++) {
-      for (int col = 0; col < count; col++) {
-        int data_idx = row * count + col;
+
+    // Scan pattern generation.
+    int T = int(2.0 * M_PI / ANGULAR_RESOLUTION);
+    double amplitutde = _circular_fov / 2.0;
+    // Store the location of the laser point.
+    std::unordered_set<std::pair<int, int>, boost::hash<std::pair<int, int>>> col_row_set;
+
+    for (int scan = 0; scan < NUM_SCAN_PER_MSG; scan++) {
+      for (int t = 0; t < T; t++) {
+        // Scaning pattern in polar coordinate.
+        double theta = ANGULAR_RESOLUTION * t;
+        double r = amplitutde * cos(N * theta + _total_phase_shift);
         
-        float range = msg->scan().ranges(data_idx);
-        float intensity = msg->scan().intensities(data_idx);
+        // Convert pattern into cartesian coordinate.
+        double azimuth = r * cos(theta);
+        double elevation = r * sin(theta);
+        
+        // Convert pattern into coordinate on ray data.
+        int col = (int) ((azimuth + angle_range / 2.0) / angle_step);
+        int row = (int) ((elevation + vertical_angle_range / 2.0) / vertical_angle_step);
 
-        if (isinf(range)) {
-          continue;
-        }
-
-        float azimuth = col * angle_step - angle_range / 2.0;
-        float elevation = row * vertical_angle_step - vertical_angle_range / 2.0;
-
-        float range_z = range * sin(elevation);
-        float range_xy = range * cos(elevation);
-        float range_x = range_xy * cos(azimuth);
-        float range_y = range_xy * sin(azimuth);
-
-        ignition::math::Vector3<float> laser_vec(range_x, range_y, range_z);
-        ignition::math::Vector3<float> laser_vec_unit = laser_vec.Normalize();
-        ignition::math::Vector3<float> forward(1.0, 0, 0);
-        float dot_product = laser_vec_unit.Dot(forward);
-
-        // The laser lies within the circular FOV of the lidar.
-        if (dot_product > cos(_circular_fov / 2.0)) {
-          data_ptr[NUM_FIELDS * num_points] = range_x;
-          data_ptr[NUM_FIELDS * num_points + 1] = range_y;
-          data_ptr[NUM_FIELDS * num_points + 2] = range_z;
-          data_ptr[NUM_FIELDS * num_points + 3] = intensity;
-    
-          num_points++;
+        std::pair<int, int> row_col = std::make_pair(row, col);
+        auto it = col_row_set.find(row_col);
+        // Check for duplicate, then add to hash table.
+        if (it == col_row_set.end()) {
+          col_row_set.insert(row_col);
         }
       }
+      // Increment the phase.
+      _total_phase_shift = fmod(_total_phase_shift + PHASE_SHIFT, 2 * M_PI);
     }
+
+    for (auto it = col_row_set.begin(); it != col_row_set.end(); it++) {
+      int row = (*it).first;
+      int col = (*it).second;
+
+      int data_idx = row * count + col;
+      
+      float range = msg->scan().ranges(data_idx);
+      float intensity = msg->scan().intensities(data_idx);
+
+      if (isinf(range)) {
+        continue;
+      }
+
+      float azimuth = col * angle_step - angle_range / 2.0;
+      float elevation = row * vertical_angle_step - vertical_angle_range / 2.0;
+
+      float range_z = range * sin(elevation);
+      float range_xy = range * cos(elevation);
+      float range_x = range_xy * cos(azimuth);
+      float range_y = range_xy * sin(azimuth);
+
+      data_ptr[NUM_FIELDS * num_points] = range_x;
+      data_ptr[NUM_FIELDS * num_points + 1] = range_y;
+      data_ptr[NUM_FIELDS * num_points + 2] = range_z;
+      data_ptr[NUM_FIELDS * num_points + 3] = intensity;
+    
+      num_points++;
+    }
+
     pc_msg.width = num_points;
     pc_msg.row_step = num_points * POINT_STEP;
     pc_msg.height = 1;

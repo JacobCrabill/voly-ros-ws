@@ -39,6 +39,18 @@ namespace gazebo {
       // Gazebo messaging.
       private: gazebo::transport::NodePtr _gazebo_node;
       gazebo::transport::SubscriberPtr _sub;
+
+      /** Phase shift of the scanning pattern. */
+      double _total_phase_shift;
+
+      /** Parameters for scanning pattern (flower pattern). */
+      /** Number of unique patterns (or flower petals) per 360 deg rotation. */
+      static const unsigned int N = 5;
+      /** A magic number for phase shift, such that the pattern will never overlap. */
+      const double PHASE_SHIFT;
+      static constexpr double ANGULAR_RESOLUTION = 0.001;
+      /** Number of complete 360 deg scan per pointcloud message. (or number of flowers per message) */
+      static const unsigned int NUM_SCAN_PER_MSG = 2;
   };
 }
 

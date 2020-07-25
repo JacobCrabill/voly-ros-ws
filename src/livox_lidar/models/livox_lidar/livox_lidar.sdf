@@ -48,13 +48,13 @@
           <scan>
             <horizontal>
               <samples>100</samples>
-              <resolution>7.68</resolution>
+              <resolution>2</resolution>
               <min_angle>-0.35</min_angle>
               <max_angle>0.35</max_angle>
             </horizontal>
             <vertical>
               <samples>100</samples>
-              <resolution>7.68</resolution>
+              <resolution>2</resolution>
               <min_angle>-0.35</min_angle>
               <max_angle>0.35</max_angle>
             </vertical>
