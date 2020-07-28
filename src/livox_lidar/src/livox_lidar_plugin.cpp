@@ -139,7 +139,7 @@ namespace gazebo {
       for (int t = 0; t < T; t++) {
         // Scaning pattern in polar coordinate.
         double theta = ANGULAR_RESOLUTION * t;
-        double r = amplitutde * cos(N * theta + _total_phase_shift);
+        double r = amplitutde / 2.0 * ( 1.0 + cos(N * theta + _total_phase_shift));
         
         // Convert pattern into cartesian coordinate.
         double azimuth = r * cos(theta);

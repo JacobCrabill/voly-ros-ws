@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 if __name__=='__main__':
-  for i in range(2, 15):
+  for i in range(5, 15):
     print(i)
     delta_theta = 0.001
     thetas = np.zeros(0)
@@ -13,9 +13,9 @@ if __name__=='__main__':
     alpha = (1.0 + n**2) / n**3
     phase_shift = alpha * d
 
-    for t in range(0, 500):
+    for t in range(0, 1):
       theta = np.arange(0, 2 * np.pi, delta_theta)
-      r = np.cos(n * theta + phase_shift * t % (2 * np.pi))
+      r = 0.5 + 0.5 * np.cos(n * theta + phase_shift * t % (2 * np.pi))
       thetas = np.append(thetas, theta)
       rs = np.append(rs, r)
 
