@@ -106,7 +106,7 @@ WORKDIR /usr/app
 
 COPY . .
 
-RUN git submodule init && git submodule update --recursive
+# RUN git submodule init && git submodule update --recursive
 
 WORKDIR /usr/app/vendor
 
@@ -120,13 +120,13 @@ RUN cp ../install_spinnaker.sh .
 
 RUN /bin/bash -c "(echo \"Y\" && cat) | ./install_spinnaker.sh"
 
-WORKDIR /usr/app/src/mavlink_sitl_gazebo/external
+# WORKDIR /usr/app/src/mavlink_sitl_gazebo/external
 
-RUN git submodule init && git submodule update --recursive
+# RUN git submodule init && git submodule update --recursive
 
-WORKDIR /usr/app/src/mavlink_sitl_gazebo/external/OpticalFlow/external
+# WORKDIR /usr/app/src/mavlink_sitl_gazebo/external/OpticalFlow/external
 
-RUN git submodule init && git submodule update --recursive
+# RUN git submodule init && git submodule update --recursive
 
 WORKDIR /usr/app
 
