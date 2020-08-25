@@ -62,7 +62,8 @@ jobs:
   #           bash ${SITL_RUN_SH} precision_landing_payload_drop.test
 
   build-container:
-    machine: true
+    machine:
+      docker_layer_caching: true
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -73,7 +74,7 @@ jobs:
           echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
 
       # build the application image
-      - run: docker build -t flyvoly/lomp:${CIRCLE_SHA1:0:7} .
+      - run: docker build -f ./Dockerfile.amd64 -t flyvoly/lomp:${CIRCLE_SHA1:0:7} .
 
       # deploy the image
       - run: docker push flyvoly/lomp:${CIRCLE_SHA1:0:7}
