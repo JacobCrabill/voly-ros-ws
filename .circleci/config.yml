@@ -1,93 +1,87 @@
 version: 2.1
 jobs:
-  build-ros-ws:
-    docker:
-      - image: flyvoly/lomp:latest
+  # build-ros-ws:
+  #   docker:
+  #     - image: flyvoly/lomp:latest
 
-    resource_class: medium
+  #   resource_class: medium
 
-    steps:
-      - checkout
-      - run:
-          name: Setup submodules
-          command: |
-            chmod 700 .ssh/key
-            eval `ssh-agent`
-            ssh-add .ssh/key
-            git submodule sync --recursive && git submodule update --init --recursive
-      - run:
-          name: Build ros packages
-          command: |
-            source /opt/ros/melodic/setup.bash
-            catkin build -j4 px4 mavlink_sitl_gazebo mavros mavros_extras volys_precision_landing robot_localization
-      - save_cache:
-          key: precision-landing-{{ .Branch }}-{{ .Revision }}
-          paths: 
-            - ./
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Setup submodules
+  #         command: |
+  #           chmod 700 .ssh/key
+  #           eval `ssh-agent`
+  #           ssh-add .ssh/key
+  #           git submodule sync --recursive && git submodule update --init --recursive
+  #     - run:
+  #         name: Build ros packages
+  #         command: |
+  #           source /opt/ros/melodic/setup.bash
+  #           catkin build -j4 px4 mavlink_sitl_gazebo mavros mavros_extras volys_precision_landing robot_localization
+  #     - save_cache:
+  #         key: precision-landing-{{ .Branch }}-{{ .Revision }}
+  #         paths: 
+  #           - ./
 
-  run-precision-landing-test:
-    docker:
-      - image: flyvoly/lomp:latest
+  # run-precision-landing-test:
+  #   docker:
+  #     - image: flyvoly/lomp:latest
 
-    resource_class: large
+  #   resource_class: large
     
-    steps:
-      - restore_cache:
-          keys: 
-            - precision-landing-{{ .Branch }}-{{ .Revision }}
+  #   steps:
+  #     - restore_cache:
+  #         keys: 
+  #           - precision-landing-{{ .Branch }}-{{ .Revision }}
       
-      - run:
-          name: Run VTOL Mission
-          command: |
-            export SITL_RUN_SH="/root/project/src/px4_firmware/test/rostest_precision_landing.sh"
-            echo ${SITL_RUN_SH}
-            bash ${SITL_RUN_SH} precision_landing_test.test
+  #     - run:
+  #         name: Run VTOL Mission
+  #         command: |
+  #           export SITL_RUN_SH="/root/project/src/px4_firmware/test/rostest_precision_landing.sh"
+  #           echo ${SITL_RUN_SH}
+  #           bash ${SITL_RUN_SH} precision_landing_test.test
 
-  run-precision-landing-payload-drop-test:
-    docker:
-      - image: flyvoly/lomp:latest
+  # run-precision-landing-payload-drop-test:
+  #   docker:
+  #     - image: flyvoly/lomp:latest
 
-    resource_class: large
+  #   resource_class: large
     
-    steps:
-      - restore_cache:
-          keys: 
-            - precision-landing-{{ .Branch }}-{{ .Revision }}
+  #   steps:
+  #     - restore_cache:
+  #         keys: 
+  #           - precision-landing-{{ .Branch }}-{{ .Revision }}
       
-      - run:
-          name: Run VTOL Mission
-          command: |
-            export SITL_RUN_SH="/root/project/src/px4_firmware/test/rostest_precision_landing.sh"
-            echo ${SITL_RUN_SH}
-            bash ${SITL_RUN_SH} precision_landing_payload_drop.test
+  #     - run:
+  #         name: Run VTOL Mission
+  #         command: |
+  #           export SITL_RUN_SH="/root/project/src/px4_firmware/test/rostest_precision_landing.sh"
+  #           echo ${SITL_RUN_SH}
+  #           bash ${SITL_RUN_SH} precision_landing_payload_drop.test
 
-  build-balena-docker-ros-ws:
+  build-container:
     machine: true
     steps:
       - add_ssh_keys:
           fingerprints:
             - "66:d2:c5:6a:6e:d7:48:41:e6:31:5c:55:17:70:58:b4"
       - checkout
+      - run: git submodule sync --recursive && git submodule update --init --recursive
       - run: |
-          cd src
-          git submodule init && git submodule update
-          cd px4_firmware/Tools
-          git submodule init && git submodule update
-          cd ../../../
-          docker build -f ./Dockerfile.balena-intel-nuc -t balena-voly-ros_ws:latest .
+          echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+
+      # build the application image
+      - run: docker build -t flyvoly/lomp:${CIRCLE_SHA1:0:7} .
+
+      # deploy the image
+      - run: docker push flyvoly/lomp:${CIRCLE_SHA1:0:7}
 
 workflows:
   version: 2
 
   precision-landing-test:
     jobs: 
-      - build-ros-ws
-      - build-balena-docker-ros-ws
-      - run-precision-landing-test:
-          requires:
-            - build-ros-ws
-      - run-precision-landing-payload-drop-test:
-          requires:
-            - build-ros-ws
-
+      - build-container
   
