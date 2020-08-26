@@ -80,7 +80,7 @@ jobs:
       - run: docker push flyvoly/lomp:${CIRCLE_SHA1:0:7}
 
       - run:
-        command: |
+          command: |
             docker run -d --name ros-test flyvoly/lomp:${CIRCLE_SHA1:0:7}
             sleep 20
 
