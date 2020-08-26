@@ -137,7 +137,7 @@ RUN sed -i "s/MAV_FRAME_VISION_NED/MAV_FRAME_RESERVED_16/g" /usr/app/src/mavlink
 
 #RUN /bin/bash -c "source /opt/ros/melodic/setup.sh; catkin build mavlink_sitl_gazebo --cmake-args -DENABLE_UNIT_TESTS=OFF -DCATKIN_ENABLE_TESTING=0"
 
-RUN /bin/bash -c "source /opt/ros/melodic/setup.sh; catkin build -j4 spinnaker_sdk_camera_driver px4 mavlink_sitl_gazebo mavros mavros_extras volys_precision_landing robot_localization px4 image_proc --cmake-args -DENABLE_UNIT_TESTS=OFF -DCATKIN_ENABLE_TESTING=0"
+RUN /bin/bash -c "source /opt/ros/melodic/setup.sh; catkin build -j4 spinnaker_sdk_camera_driver px4 mavlink_sitl_gazebo mavros mavros_extras volys_precision_landing robot_localization px4 image_proc --cmake-args"
 
 ENTRYPOINT ["sh", "-c", "/usr/app/entrypoint.sh"]
 
