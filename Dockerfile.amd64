@@ -139,8 +139,6 @@ ENV ENABLE_UNIT_TESTS OFF
 RUN sed -i "s/MAV_FRAME_VISION_NED/MAV_FRAME_RESERVED_16/g" /usr/app/src/mavlink_sitl_gazebo/src/gazebo_mavlink_interface.cpp
 
 #RUN /bin/bash -c "source /opt/ros/melodic/setup.sh; catkin build mavlink_sitl_gazebo --cmake-args -DENABLE_UNIT_TESTS=OFF -DCATKIN_ENABLE_TESTING=0"
-RUN /bin/bash -c "[ -d "./devel" ] && rm -r ./devel"
-RUN /bin/bash -c "[ -d "./build" ] && rm -r ./build"
 RUN mkdir -p /root/Desktop/log/
 RUN /bin/bash -c "source /opt/ros/melodic/setup.sh; catkin build -j4 spinnaker_sdk_camera_driver px4 mavlink_sitl_gazebo mavros mavros_extras volys_precision_landing robot_localization px4 image_proc"
 
