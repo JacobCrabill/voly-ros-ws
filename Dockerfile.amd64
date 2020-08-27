@@ -12,6 +12,8 @@ RUN apt-get install -y \
   lsb-release \
   build-essential \
   python3-pip \
+  python-pip \
+  python-tk \
   libgtk2.0-dev \
   libcairo2-dev \
   libunwind-dev \
@@ -100,7 +102,8 @@ RUN apt-get install -y \
   ros-melodic-cv-camera \
   ros-melodic-gazebo-dev
 
-RUN pip3 install -U catkin_tools jinja2 numpy toml
+RUN pip3 install -U catkin_tools jinja2 numpy toml rospkg pycryptodomex pycryptodome gnupg
+RUN pip install -U matplotlib pyquaternion scipy yappi
 
 WORKDIR /usr/app
 
@@ -136,8 +139,10 @@ ENV ENABLE_UNIT_TESTS OFF
 RUN sed -i "s/MAV_FRAME_VISION_NED/MAV_FRAME_RESERVED_16/g" /usr/app/src/mavlink_sitl_gazebo/src/gazebo_mavlink_interface.cpp
 
 #RUN /bin/bash -c "source /opt/ros/melodic/setup.sh; catkin build mavlink_sitl_gazebo --cmake-args -DENABLE_UNIT_TESTS=OFF -DCATKIN_ENABLE_TESTING=0"
-
-RUN /bin/bash -c "source /opt/ros/melodic/setup.sh; catkin build -j4 spinnaker_sdk_camera_driver px4 mavlink_sitl_gazebo mavros mavros_extras volys_precision_landing robot_localization px4 image_proc --cmake-args"
+RUN [ -d "./devel" ] && rm -r ./devel
+RUN [ -d "./build" ] && rm -r ./build
+RUN mkdir -p /root/Desktop/log/
+RUN /bin/bash -c "source /opt/ros/melodic/setup.sh; catkin build -j4 spinnaker_sdk_camera_driver px4 mavlink_sitl_gazebo mavros mavros_extras volys_precision_landing robot_localization px4 image_proc"
 
 RUN ["chmod", "+x", "/usr/app/entrypoint.sh"]
 ENTRYPOINT ["/usr/app/entrypoint.sh"]
