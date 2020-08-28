@@ -79,13 +79,13 @@ jobs:
       # deploy the image
       - run: docker push flyvoly/lomp:${CIRCLE_SHA1:0:7}
 
-      - run:
-          command: |
-            docker run -d --name ros-test flyvoly/lomp:${CIRCLE_SHA1:0:7}
-            sleep 20
+      # - run:
+      #     command: |
+      #       docker run -d --name ros-test flyvoly/lomp:${CIRCLE_SHA1:0:7}
+      #       sleep 20
 
       #run precision_landing test
-      - run: docker exec -it ros-test bash /root/project/src/px4_firmware/test/rostest_precision_landing.sh precision_landing_test.test
+      - run: docker run -it flyvoly/lomp:${CIRCLE_SHA1:0:7} bash /usr/app/src/px4_firmware/test/rostest_precision_landing.sh precision_landing_test.test
       
 
 workflows:
