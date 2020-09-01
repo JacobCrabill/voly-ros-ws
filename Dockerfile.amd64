@@ -142,6 +142,12 @@ RUN sed -i "s/MAV_FRAME_VISION_NED/MAV_FRAME_RESERVED_16/g" /usr/app/src/mavlink
 RUN mkdir -p /root/Desktop/log/
 RUN /bin/bash -c "source /opt/ros/melodic/setup.sh; catkin build -j4 spinnaker_sdk_camera_driver px4 mavlink_sitl_gazebo mavros mavros_extras volys_precision_landing robot_localization px4 image_proc"
 
+WORKDIR /usr/app/vendor/opencv/build
+RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
+  -D CMAKE_INSTALL_PREFIX=/usr/local \
+  -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules ..
+RUN make -j8 && make install
+
 RUN ["chmod", "+x", "/usr/app/entrypoint.sh"]
 ENTRYPOINT ["/usr/app/entrypoint.sh"]
 
