@@ -41,3 +41,6 @@
 [submodule "src/avoidance"]
 	path = src/avoidance
 	url = git@bitbucket.org:volansi/avoidance.git
+[submodule "src/mavlink-gbp-release"]
+	path = src/mavlink-gbp-release
+	url = https://github.com/mavlink/mavlink-gbp-release.git
