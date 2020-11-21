@@ -47,3 +47,7 @@
 [submodule "vendor/opencv_contrib"]
 	path = vendor/opencv_contrib
 	url = https://github.com/opencv/opencv_contrib.git
+
+[submodule "src/mavlink-gbp-release"]
+	path = src/mavlink-gbp-release
+	url = https://github.com/mavlink/mavlink-gbp-release.git
