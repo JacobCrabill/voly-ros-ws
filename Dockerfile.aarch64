@@ -102,8 +102,8 @@ RUN apt-get install -y \
   ros-melodic-cv-camera \
   ros-melodic-gazebo-dev
 
-RUN pip3 install -U Cython catkin_tools jinja2 numpy toml rospkg pycryptodomex pycryptodome gnupg
-RUN pip install -U Cython matplotlib pyquaternion scipy yappi numpy
+RUN pip3 install -U Cython catkin_tools jinja2 numpy toml rospkg pycryptodomex pycryptodome gnupg future
+RUN pip install -U Cython matplotlib pyquaternion scipy yappi numpy future
 
 WORKDIR /usr/app
 
