@@ -129,6 +129,7 @@ ENV ENABLE_UNIT_TESTS OFF
 
 RUN mkdir -p /root/Desktop/log/
 RUN /bin/bash -c "source /opt/ros/melodic/setup.sh; catkin build -j4 mavlink spinnaker_sdk_camera_driver px4 mavlink_sitl_gazebo mavros mavros_extras volys_precision_landing robot_localization px4 image_proc"
+RUN echo 1000 > /sys/modules/usbcore/parameters/usbfs_memory_mb
 
 WORKDIR /usr/app/vendor/opencv/build
 RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
