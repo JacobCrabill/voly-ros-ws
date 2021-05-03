@@ -1,0 +1,136 @@
+FROM balenalib/intel-nuc-ubuntu:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+WORKDIR /usr/src
+
+RUN apt-get clean all && apt-get update
+
+RUN apt-get install -y \
+  apt-utils \
+  tzdata \
+  lsb-release \
+  build-essential \
+  python3-pip \
+  python-pip \
+  python-tk \
+  libgtk2.0-dev \
+  libcairo2-dev \
+  libunwind-dev \
+  python-jinja2 \
+  python-toml \
+  python-numpy \
+  cmake
+
+RUN apt-get install -y \
+  geographiclib-tools \
+  libgeographic-dev \
+  libgstreamermm-1.0-1 \
+  libgstreamermm-1.0-dev \
+  libgtest-dev
+
+RUN mkdir -p /usr/src/googletest/googletest/build
+
+WORKDIR /usr/src/googletest/googletest/build
+
+RUN cmake ..
+RUN make && make install
+RUN ldconfig
+
+WORKDIR /usr/src
+
+RUN curl -O https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
+RUN chmod +x ./install_geographiclib_datasets.sh
+RUN ./install_geographiclib_datasets.sh
+
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+RUN apt-get update
+
+RUN apt-get autoclean
+
+RUN apt-get install -y \
+    clang \
+    g++ \
+    git \
+    google-mock \
+    libboost-all-dev \
+    libcairo2-dev \
+    libcurl4-openssl-dev \
+    libeigen3-dev \
+    libgflags-dev \
+    libgoogle-glog-dev \
+    liblua5.2-dev \
+    libsuitesparse-dev \
+    libopencv-core3.2  \
+    libopencv-core-dev \
+    libavcodec57 \
+    libavformat57 \
+    libswscale4 \
+    libswresample2 \
+    libavutil55 \
+    libusb-1.0-0 \
+    libgtkmm-2.4-dev \
+    libgazebo9-dev \
+    ninja-build \
+    python-sphinx
+
+RUN apt-get install -y \
+  ros-melodic-ros-base \
+  ros-melodic-control-toolbox \
+  ros-melodic-octomap \
+  ros-melodic-octomap-msgs \
+  ros-melodic-urdf \
+  ros-melodic-tf2-eigen \
+  ros-melodic-roslint \
+  ros-melodic-geographic-msgs \
+  ros-melodic-geometry \
+  ros-melodic-eigen-conversions \
+  ros-melodic-tf2-geometry-msgs \
+  ros-melodic-ddynamic-reconfigure \
+  ros-melodic-diagnostic-updater \
+  ros-melodic-librealsense2 \
+  ros-melodic-realsense2-camera \
+  ros-melodic-realsense2-description \
+  ros-melodic-cv-bridge \
+  ros-melodic-image-transport \
+  ros-melodic-image-geometry \
+  ros-melodic-pcl-ros \
+  ros-melodic-pcl-msgs \
+  ros-melodic-mavlink \
+  ros-melodic-cv-bridge \
+  ros-melodic-cv-camera \
+  ros-melodic-gazebo-dev
+
+RUN pip3 install -U catkin_tools jinja2 numpy toml rospkg pycryptodomex pycryptodome gnupg future lxml pymavlink pyserial
+RUN pip install -U matplotlib pyquaternion scipy yappi future lxml pymavlink pyserial
+
+WORKDIR /usr/app
+
+COPY ./vendor ./vendor
+
+WORKDIR /usr/app/vendor
+
+RUN tar -xvzf spinnaker-2.0.0.147-amd64-pkg.tar.gz
+
+WORKDIR /usr/app/vendor/spinnaker-2.0.0.147-amd64
+
+RUN cp ../configure_spinnaker.sh .
+
+RUN cp ../install_spinnaker.sh .
+
+RUN /bin/bash -c "(echo \"Y\" && cat) | ./install_spinnaker.sh"
+
+WORKDIR /usr/app
+
+ENV ENABLE_UNIT_TESTS OFF
+
+RUN mkdir -p /root/Desktop/log/
+
+WORKDIR /usr/app/vendor/opencv/build
+RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
+  -D CMAKE_INSTALL_PREFIX=/usr/local \
+  -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules ..
+RUN make -j8 && make install
+WORKDIR /usr/app/
+RUN rm -r ./vendor
