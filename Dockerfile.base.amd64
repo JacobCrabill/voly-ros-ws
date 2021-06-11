@@ -1,4 +1,4 @@
-FROM balenalib/jetson-xavier-ubuntu
+FROM balenalib/intel-nuc-ubuntu:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -102,20 +102,18 @@ RUN apt-get install -y \
   ros-melodic-cv-camera \
   ros-melodic-gazebo-dev
 
-RUN pip3 install -U Cython catkin_tools jinja2 numpy toml rospkg pycryptodomex pycryptodome gnupg future lxml pymavlink pyserial
-RUN pip install -U Cython matplotlib pyquaternion scipy yappi numpy future lxml pymavlink pyserial
+RUN pip3 install -U catkin_tools jinja2 numpy toml rospkg pycryptodomex pycryptodome gnupg future lxml pymavlink pyserial
+RUN pip install -U matplotlib pyquaternion scipy yappi future lxml pymavlink pyserial
 
 WORKDIR /usr/app
 
-COPY . .
-
-# RUN git submodule init && git submodule update --recursive
+COPY ./vendor ./vendor
 
 WORKDIR /usr/app/vendor
 
 RUN tar -xvzf spinnaker-2.0.0.147-amd64-pkg.tar.gz
 
-WORKDIR /usr/app/vendor/spinnaker-2.0.0.147-arm64
+WORKDIR /usr/app/vendor/spinnaker-2.0.0.147-amd64
 
 RUN cp ../configure_spinnaker.sh .
 
@@ -128,14 +126,11 @@ WORKDIR /usr/app
 ENV ENABLE_UNIT_TESTS OFF
 
 RUN mkdir -p /root/Desktop/log/
-RUN /bin/bash -c "source /opt/ros/melodic/setup.sh; catkin build -j4 mavlink spinnaker_sdk_camera_driver px4 mavlink_sitl_gazebo mavros mavros_extras volys_precision_landing robot_localization px4 image_proc"
 
 WORKDIR /usr/app/vendor/opencv/build
 RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
   -D CMAKE_INSTALL_PREFIX=/usr/local \
   -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules ..
 RUN make -j8 && make install
-
-RUN ["chmod", "+x", "/usr/app/entrypoint.sh"]
-ENTRYPOINT ["/usr/app/entrypoint.sh"]
-
+WORKDIR /usr/app/
+RUN rm -r ./vendor
